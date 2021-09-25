@@ -4,7 +4,11 @@
   "description": "EstacionAqui TCC Application - API Gateway",
   "main": "src/server.ts",
   "scripts": {
-    "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts"
+    "build": "tsc",
+    "dev": "nodemon src/server.ts",
+    "dev:debug": "nodemon --inspect src/server.ts",
+    "start": "ts-node src/server.ts --optimize_for_size --max_old_space_size=460",
+    "lint": "eslint . --ext .ts --ext .tsx"
   },
   "repository": {
     "type": "git",
