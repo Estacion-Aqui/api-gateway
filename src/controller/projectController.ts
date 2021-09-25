@@ -100,6 +100,7 @@ export const updateData = async (req: Request, res: Response) => {
         "email" : "gabrielteixeir137@gmail.com"
     }
 
+    return res.status(200).json(responseData);
 }
 
 export const insertData = async (req: Request, res: Response) => {
