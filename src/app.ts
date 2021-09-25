@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import morgan from 'morgan';
 
 import * as routes from './router';
 
@@ -18,9 +17,7 @@ class App {
 
   private middlewares() {
     this.express.use(cors());
-    this.express.use(express.json());
-
-    this.express.use(morgan('dev'))
+    this.express.use(express.json);
   }
 
   private routes() {
