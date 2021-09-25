@@ -49,7 +49,7 @@ export const getPlaces = async (req: Request, res: Response) => {
         }
     ];
 
-    return res.status(200).json({ places: responseData });
+    return res.status(200).json(responseData);
 }
 
 export const getTravelData = async (req: Request, res: Response) => {
@@ -80,7 +80,7 @@ export const getTravelData = async (req: Request, res: Response) => {
           }
     ];
 
-    return res.status(200).json({ places: responseData });
+    return res.status(200).json({ travelData: responseData });
 }
 
 export const reserveSpot = async (req: Request, res: Response) => {
@@ -89,7 +89,7 @@ export const reserveSpot = async (req: Request, res: Response) => {
         "spotId": "A22"
     }
 
-    return res.status(200).json({ message: "Spot reserved with success" });
+    return res.status(200).json({ reserveSpot: "Spot reserved with success" });
 }
 
 export const updateData = async (req: Request, res: Response) => {
@@ -100,7 +100,7 @@ export const updateData = async (req: Request, res: Response) => {
         "email" : "gabrielteixeir137@gmail.com"
     }
     
-    return res.status(200).json({ message: "Spot data updated with success" });
+    return res.status(200).json({ updateData: "Spot data updated with success" });
 }
 
 export const insertData = async (req: Request, res: Response) => {
@@ -111,7 +111,7 @@ export const insertData = async (req: Request, res: Response) => {
         "email" : "gabrielteixeir137@gmail.com"
     }
 
-    return res.status(201).json({ message: "Spot data inserted with success" });
+    return res.status(201).json({ insertData: "Spot data inserted with success" });
 }
 
 export const checkLogin = async (req: Request, res: Response) => {
@@ -122,7 +122,7 @@ export const checkLogin = async (req: Request, res: Response) => {
         "email" : "gabrielteixeir137@gmail.com"
     }
     
-    return res.status(200).json({ message: "Spot data inserted with success" });
+    return res.status(200).json({ checkLogin: "Spot data inserted with success" });
 }
 
 export const confirmSpot = async (req: Request, res: Response) => {
@@ -132,7 +132,7 @@ export const confirmSpot = async (req: Request, res: Response) => {
         "usId": ""
     }
     
-    return res.status(200).json({ message: "Spot data inserted with success" });
+    return res.status(200).json({ confirmSpot: "Spot data inserted with success" });
 }
 
 export const cancelSpot = async (req: Request, res: Response) => {
@@ -142,7 +142,7 @@ export const cancelSpot = async (req: Request, res: Response) => {
         "usId": ""
     }
     
-    return res.status(200).json({ message: "Spot data inserted with success" });
+    return res.status(200).json({ cancelSpot: "Spot data inserted with success" });
 }
 
 export const checkStatusSpot = async (req: Request, res: Response) => {
@@ -152,5 +152,5 @@ export const checkStatusSpot = async (req: Request, res: Response) => {
         "usId": ""
     }
     
-    return res.status(200).json({ message: "Spot data inserted with success" });
+    return res.status(200).json({ checkStatusSpot: "Spot data inserted with success" });
 }

@@ -1,23 +1,26 @@
-import express from 'express';
+import express, { RequestHandler } from 'express';
 import cors from 'cors';
+import morgan from 'morgan';
+import bodyParser, { urlencoded } from 'body-parser';
 
 import * as routes from './router';
 
 require('dotenv').config();
 
 class App {
-  public express: express.Application;
+  public express = express();
 
   public constructor() {
-    this.express = express();
-
     this.middlewares();
     this.routes();
   }
 
   private middlewares() {
+    this.express.use
+
     this.express.use(cors());
-    this.express.use(express.json);
+    this.express.use(express.json() as RequestHandler);
+    this.express.use(express.urlencoded({ extended: true }) as RequestHandler);
   }
 
   private routes() {
