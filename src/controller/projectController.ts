@@ -1,5 +1,5 @@
 import express, { RequestHandler,  Request, Response } from 'express';
-import db from '../config/database';
+import pool from '../config/database';
 
 
       /*const responseData = [
@@ -50,14 +50,16 @@ import db from '../config/database';
         }
     ];*/
 export const getPlaces = async (req: Request, res: Response) => {
-    const response = await db.query(
+    const client = await pool.connect();
+    const response = await client.query(
       'SELECT Id, Type, Title, Amount, QuantitySpots, Latitide, Longitude FROM Places ORDER BY Status ASC',
     );
     return res.status(200).send(response.rows);
 }
 
 export const getPlacesId = async (req: Request, res: Response) => {
-    const response = await db.query(
+    const client = await pool.connect();
+    const response = await client.query(
       'SELECT Id, Type, Title, Amount, QuantitySpots, Latitide, Longitude  FROM Places WHERE Id = $1',
       [parseInt(req.params.id)],
     );
@@ -65,13 +67,14 @@ export const getPlacesId = async (req: Request, res: Response) => {
 }
 
 export const createSoliciation = async (req: Request, res: Response) => {
-    const responseSpot = await db.query(
+    const client = await pool.connect();
+    const responseSpot = await client.query(
       'SELECT Id FROM Spots WHERE isUsed = false AND ID NOT IN (SELECT SpotId FROM ReserveSpot WHERE PlacesId = $1) ORDER BY Priority',
       [parseInt(req.params.placesId)],
     );
     const newSpotId = parseInt(responseSpot.rows[0].Id);
 
-    const response = await db.query(
+    const response = await client.query(
       'INSERT INTO ReserveSpot (SpotId, PlacesID, isUsed) VALUES ($1, $2, $3)',
       [newSpotId, parseInt(req.params.placesId), true],
     );
@@ -86,9 +89,10 @@ export const createSoliciation = async (req: Request, res: Response) => {
 
 
 export const updateSpot = async (req: Request, res: Response, reserved: Boolean) => {
+    const client = await pool.connect();
   const { spotId } = req.body;
 
-  //const response = await db.query(
+  //const response = await client.query(
   //  'UPDATE Spots SET Reserved = $2 WHERE Id = $1',
   //  [spotId, reserved],
   //);
