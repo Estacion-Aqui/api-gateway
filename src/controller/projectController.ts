@@ -1,7 +1,8 @@
-import { Request, Response } from 'express';
+import express, { RequestHandler,  Request, Response } from 'express';
+import db from '../config/database';
 
-export const getPlaces = async (req: Request, res: Response) => {
-    const responseData = [
+
+      /*const responseData = [
         {
           "id": "1",
           "type": "open",
@@ -47,9 +48,53 @@ export const getPlaces = async (req: Request, res: Response) => {
           "latitude": -23.683450,
           "longitude": -46.558028
         }
-    ];
+    ];*/
+export const getPlaces = async (req: Request, res: Response) => {
+    const response = await db.query(
+      'SELECT Id, Type, Title, Amount, QuantitySpots, Latitide, Longitude FROM Places ORDER BY Status ASC',
+    );
+    return res.status(200).send(response.rows);
+}
 
-    return res.status(200).json(responseData);
+export const getPlacesId = async (req: Request, res: Response) => {
+    const response = await db.query(
+      'SELECT Id, Type, Title, Amount, QuantitySpots, Latitide, Longitude  FROM Places WHERE Id = $1',
+      [parseInt(req.params.id)],
+    );
+    return res.status(200).send(response.rows);
+}
+
+export const createSoliciation = async (req: Request, res: Response) => {
+    const responseSpot = await db.query(
+      'SELECT Id FROM Spots WHERE isUsed = false AND ID NOT IN (SELECT SpotId FROM ReserveSpot WHERE PlacesId = $1) ORDER BY Priority',
+      [parseInt(req.params.placesId)],
+    );
+    const newSpotId = parseInt(responseSpot.rows[0].Id);
+
+    const response = await db.query(
+      'INSERT INTO ReserveSpot (SpotId, PlacesID, isUsed) VALUES ($1, $2, $3)',
+      [newSpotId, parseInt(req.params.placesId), true],
+    );
+
+    return res.status(201).send({
+      message: 'Solicitação Criada com Sucesso!',
+      body: {
+        product: { newSpotId,  },
+      },
+    });
+}
+
+
+export const updateSpot = async (req: Request, res: Response, reserved: Boolean) => {
+  const { spotId } = req.body;
+
+  //const response = await db.query(
+  //  'UPDATE Spots SET Reserved = $2 WHERE Id = $1',
+  //  [spotId, reserved],
+  //);
+
+  return res.status(200).send({ message: 'Vaga atualizada com Sucesso!' });
+
 }
 
 export const getTravelData = async (req: Request, res: Response) => {
