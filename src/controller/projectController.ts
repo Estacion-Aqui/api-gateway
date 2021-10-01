@@ -50,11 +50,59 @@ import pool from '../config/database';
         }
     ];*/
 export const getPlaces = async (req: Request, res: Response) => {
-    const client = await pool.connect();
+    /*const client = await pool.connect();
     const response = await client.query(
       'SELECT Id, Type, Title, Amount, QuantitySpots, Latitide, Longitude FROM Places ORDER BY Status ASC',
     );
-    return res.status(200).send(response.rows);
+    return res.status(200).send(response.rows);*/
+    const responseData = [
+        {
+          "id": "1",
+          "type": "open",
+          "title": "2.5 Km de distancia",
+          "amount": "Termomecanica",
+          "quantitySpots": "10 vagas disponíves",
+          "latitude": -23.736241,
+          "longitude": -46.583086
+        },
+        {
+          "id": "2",
+          "type": "closed",
+          "title": "14.5 Km de distancia",
+          "amount": "Termomecanica - Ensino Fundamental",
+          "quantitySpots": "Estabelecimento Fechado",
+          "latitude": -23.683450,
+          "longitude": -46.558028
+        },
+        {
+          "id": "3",
+          "type": "empty",
+          "title": "3.5 Km de distancia",
+          "amount": "Termomecanica - Apresentação da Banda 2021",
+          "quantitySpots": "Evento Encerrado",
+          "latitude": -23.683450,
+          "longitude": -46.558028
+        },
+        {
+          "id": "4",
+          "type": "empty",
+          "title": "3.5 Km de distancia",
+          "amount": "Shopping Metropole",
+          "quantitySpots": "Evento Encerrado",
+          "latitude": -23.683450,
+          "longitude": -46.558028
+        },
+        {
+          "id": "5",
+          "type": "empty",
+          "title": "3.5 Km de distancia",
+          "amount": "Shopping Metropole",
+          "quantitySpots": "Evento Encerrado",
+          "latitude": -23.683450,
+          "longitude": -46.558028
+        }
+    ];
+       return res.status(200).json(responseData);
 }
 
 export const getPlacesId = async (req: Request, res: Response) => {
