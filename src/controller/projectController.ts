@@ -89,15 +89,15 @@ export const createSoliciation = async (req: Request, res: Response) => {
 
 
 export const updateSpot = async (req: Request, res: Response, reserved: Boolean) => {
-    const client = await pool.connect();
-  const { spotId } = req.body;
+  //const client = await pool.connect();
+  const body = req.body;
 
   //const response = await client.query(
   //  'UPDATE Spots SET Reserved = $2 WHERE Id = $1',
   //  [spotId, reserved],
   //);
 
-  return res.status(200).send({ message: 'Vaga atualizada com Sucesso!' });
+  return res.status(200).send({ message: 'Vaga atualizada com Sucesso!', body });
 
 }
 
