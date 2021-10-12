@@ -49,13 +49,38 @@ import pool from '../config/database';
           "longitude": -46.558028
         }
     ];*/
+
+async function createPlaces(){
+
+    pool.connect().then(
+      function() {
+        console.log('conectou');
+        var returnval = pool.query(`INSERT INTO Places(Type, Amount, QuantitySpots, QuantitySpotsAvailable, Latitude, Longitude) VALUES( 'open', 'Termomecanica', 10,10,-23.736241,-46.583086)`);
+        returnval.then(
+          function(rows) {
+            console.log('inseriu');
+            pool.end();
+            return rows;
+          }
+        ).catch(e => {
+          console.error(e.stack)
+        })
+      })
+     .catch(e => {
+        console.error(e.stack)
+      })
+    console.log('foi');
+    return 'Success';
+}
 export const getPlaces = async (req: Request, res: Response) => {
+    console.log('asasas');
+    return res.status(200).json(createPlaces());
     /*const client = await pool.connect();
     const response = await client.query(
       'SELECT Id, Type, Title, Amount, QuantitySpots, Latitide, Longitude FROM Places ORDER BY Status ASC',
     );
     return res.status(200).send(response.rows);*/
-    const responseData = [
+    /*const responseData = [
         {
           "id": "1",
           "type": "open",
@@ -102,7 +127,7 @@ export const getPlaces = async (req: Request, res: Response) => {
           "longitude": -46.558028
         }
     ];
-       return res.status(200).json(responseData);
+       return res.status(200).json(responseData);*/
 }
 
 export const getPlacesId = async (req: Request, res: Response) => {
