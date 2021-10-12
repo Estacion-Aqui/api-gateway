@@ -73,14 +73,14 @@ async function createPlaces(){
     return 'Success';
 }
 export const getPlaces = async (req: Request, res: Response) => {
-    console.log('asasas');
-    return res.status(200).json(createPlaces());
+    //console.log('asasas');
+    //return res.status(200).json(createPlaces());
     /*const client = await pool.connect();
     const response = await client.query(
       'SELECT Id, Type, Title, Amount, QuantitySpots, Latitide, Longitude FROM Places ORDER BY Status ASC',
     );
     return res.status(200).send(response.rows);*/
-    /*const responseData = [
+    const responseData = [
         {
           "id": "1",
           "type": "open",
@@ -127,7 +127,7 @@ export const getPlaces = async (req: Request, res: Response) => {
           "longitude": -46.558028
         }
     ];
-       return res.status(200).json(responseData);*/
+       return res.status(200).json(responseData);
 }
 
 export const getPlacesId = async (req: Request, res: Response) => {
