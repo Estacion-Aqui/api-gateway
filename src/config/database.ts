@@ -1,9 +1,24 @@
 import { Pool } from 'pg';
 
-export default new Pool ({
-    user: 'aactublcedstkt',
-    host: 'ec2-54-225-190-241.compute-1.amazonaws.com',
-    database: 'd3iue6apg4g1f4',
-    password: 'bcd5da9a89971ef6dcca69287dd090b67b2cfeeb4962b0d1116806dc3cb2e2ce',
-    port: 5432
-});
+const env = process.env.NODE_ENV || 'development';
+let connectionString;
+
+if (env === 'development') {
+    connectionString = {
+        user: process.env.LOCAL_USER,
+        database: process.env.LOCAL_DB,
+        host: process.env.LOCAL_HOST,
+        port: Number(process.env.LOCAL_PORT),
+        password: process.env.LOCAL_PASS || undefined
+    };
+} else {
+    connectionString = {
+        connectionString: process.env.DATABASE_URL,
+        ssl: true
+    };
+};
+
+const pool = new Pool(connectionString);
+pool.on('connect', () => console.log('connected to db'));
+
+export default pool;

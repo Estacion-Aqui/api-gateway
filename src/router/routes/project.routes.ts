@@ -30,4 +30,6 @@ projectRouter.get("/cancelSpot", (req, resp) => projectController.cancelSpot(req
 
 projectRouter.get("/checkStatusSpot", (req, resp) => projectController.checkStatusSpot(req, resp))
 
+projectRouter.get("/test", (req, resp) => projectController.testApi(req, resp))
+
 export default projectRouter;

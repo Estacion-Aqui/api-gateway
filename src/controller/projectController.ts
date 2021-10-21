@@ -276,3 +276,7 @@ export const checkStatusSpot = async (req: Request, res: Response) => {
 
     return res.status(200).json(responseData);
 }
+
+export const testApi = async (req: Request, res: Response) => {
+  return res.status(200).json({message: 'working API'});
+}
