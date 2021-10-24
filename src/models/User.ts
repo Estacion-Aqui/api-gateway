@@ -1,6 +1,7 @@
 import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import bcrypt from 'bcrypt'
 import SpotRequest from './SpotRequest';
+import { IsEmail } from 'class-validator';
 
 @Entity('user')
 export default class User {
@@ -20,6 +21,7 @@ export default class User {
   @Column({nullable: true})
   plate: string;
 
+  @IsEmail()
   @Column({nullable: false, unique: true})
   email: string;
 
