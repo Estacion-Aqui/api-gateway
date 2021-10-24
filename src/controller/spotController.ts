@@ -91,7 +91,7 @@ export const createSolicitation = async (req: Request, res: Response) => {
 }
 
 export const helixReserveSpot = async (req: Request, res: Response) => {
-  console.log(req);
+  console.log(req.body);
 
   return res.status(200).json({message: "Received this from helix", body: req.body})
 }
