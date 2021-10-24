@@ -93,7 +93,7 @@ export const helixReserveSpot = async (req: Request, res: Response) => {
   try {
     const {id, current_plate, status} = req.body.data;
     const isUsed = status === "filled";
-    console.log(req.body);
+    console.log(req.body.data);
 
     return res.status(200).json({message: "Received this from helix", body: req.body})
   } catch (error) {
