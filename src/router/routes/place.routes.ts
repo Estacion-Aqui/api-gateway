@@ -9,4 +9,6 @@ placesRouter.get("/places", (req, resp) => placeController.getPlaces(req, resp))
 
 placesRouter.get("/places/:id", (req, resp) => placeController.getPlaceById(req, resp))
 
+placesRouter.delete("/places/:id", (req, resp) => placeController.deletePlaceById(req, resp))
+
 export default placesRouter;

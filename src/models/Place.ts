@@ -13,9 +13,6 @@ export default class Place {
   @Column({nullable: false})
   title: string;
 
-  @Column({nullable: false})
-  amount: number;
-
   @Column({nullable: true})
   quantitySpots: number;
 

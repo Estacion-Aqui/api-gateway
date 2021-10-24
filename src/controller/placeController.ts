@@ -6,9 +6,9 @@ import { Place } from '../models'
 export const createPlaces = async (req: Request, res: Response) => {
   try {
     const repo = getRepository(Place);
-    const {type, title, amount, quantitySpots, latitude, longitude} = req.body;
+    const {type, title, quantitySpots, latitude, longitude} = req.body;
 
-    const newPlace = repo.create({type, title, amount, quantitySpots, latitude, longitude});
+    const newPlace = repo.create({type, title, quantitySpots, latitude, longitude});
 
     const errors = await validate(newPlace);
 
@@ -42,6 +42,19 @@ export const getPlaceById = async (req: Request, res: Response) => {
     const foundPlace = await repo.findOneOrFail(id);
 
     return res.status(200).json(foundPlace);
+  } catch (error) {
+    return res.status(404).json(error);
+  }
+}
+
+export const deletePlaceById = async (req: Request, res: Response) => {
+  try {
+    const repo = getRepository(Place);
+    const { id } = req.params;
+
+    await repo.delete(id);
+
+    return res.status(200).json({"msg" : "Success"});
   } catch (error) {
     return res.status(404).json(error);
   }
