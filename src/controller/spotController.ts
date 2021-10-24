@@ -1,9 +1,8 @@
 import { validate } from 'class-validator';
 import { Request, Response } from 'express';
-import { getRepository, getCustomRepository } from 'typeorm';
+import { getRepository } from 'typeorm';
 
 import { Spot, SpotRequest } from '../models'
-import { SpotRepository } from '../repositories';
 
 export const createSpot = async (req: Request, res: Response) => {
   try {
@@ -128,4 +127,26 @@ export const cancelSpot = async (req: Request, res: Response) => {
   } catch (error) {
     return res.status(400).json(error);
   }
+}
+
+export const updateSpot = async (req: Request, res: Response, reserved: Boolean) => {
+  //const client = await pool.connect();
+  const body = req.body;
+
+  //const response = await client.query(
+  //  'UPDATE Spots SET Reserved = $2 WHERE Id = $1',
+  //  [spotId, reserved],
+  //);
+
+  return res.status(200).send({ message: 'Vaga atualizada com Sucesso!', body });
+}
+
+export const checkStatusSpot = async (req: Request, res: Response) => {
+  const responseData = {
+      "parkId": "1",
+      "spotId": "A22",
+      "usId": ""
+  }
+
+  return res.status(200).json(responseData);
 }

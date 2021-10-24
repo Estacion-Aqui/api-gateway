@@ -2,8 +2,6 @@ import express, { RequestHandler } from 'express';
 import cors from 'cors';
 
 import * as routes from './router';
-import { PoolClient } from 'pg';
-
 
 class App {
   public app = express();
@@ -25,7 +23,8 @@ class App {
       routes.projectRouter,
       routes.userRouter,
       routes.spotRouter,
-      routes.placeRouter
+      routes.placeRouter,
+      routes.authRouter
     ]);
   }
 }

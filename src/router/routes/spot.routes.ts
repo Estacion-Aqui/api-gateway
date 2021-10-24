@@ -19,4 +19,8 @@ spotsRouter.put("/spots/confirmSpot/:id", (req, resp) => spotController.confirmS
 
 spotsRouter.delete("/spots/cancelSpot/:id", (req, resp) => spotController.cancelSpot(req, resp))
 
+spotsRouter.get("/spots/checkStatus", (req, resp) => spotController.checkStatusSpot(req, resp))
+
+spotsRouter.post("/spots/freeSpot", (req, resp) => spotController.updateSpot(req, resp, false))
+
 export default spotsRouter;
