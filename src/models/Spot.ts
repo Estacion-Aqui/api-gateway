@@ -15,6 +15,9 @@ export default class Spot {
   @Column({nullable: true})
   status: boolean;
 
+  @Column({nullable: true})
+  plate: string;
+
   @Column({ name: 'sensor_id', nullable: false })
   sensorId: string;
 
