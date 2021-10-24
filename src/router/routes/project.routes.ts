@@ -14,12 +14,6 @@ const projectRouter = express.Router({ mergeParams: true });
 
 // projectRouter.get("/insertData", (req, resp) => projectController.insertData(req, resp))
 
-// projectRouter.get("/checkLogin", (req, resp) => projectController.checkLogin(req, resp))
-
-// projectRouter.get("/confirmSpot", (req, resp) => projectController.confirmSpot(req, resp))
-
-// projectRouter.get("/cancelSpot", (req, resp) => projectController.cancelSpot(req, resp))
-
 // projectRouter.get("/checkStatusSpot", (req, resp) => projectController.checkStatusSpot(req, resp))
 
 projectRouter.get("/test", (req, resp) => {

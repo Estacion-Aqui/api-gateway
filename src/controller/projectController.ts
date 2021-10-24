@@ -123,37 +123,6 @@ export const insertData = async (req: Request, res: Response) => {
     return res.status(201).json(responseData);
 }
 
-export const checkLogin = async (req: Request, res: Response) => {
-    const responseData = {
-        "id": "10",
-        "name" : "Teixeira",
-        "car" : "Audi A3",
-        "email" : "gabrielteixeir137@gmail.com"
-    }
-
-    return res.status(200).json(responseData);
-}
-
-export const confirmSpot = async (req: Request, res: Response) => {
-    const responseData = {
-        "parkId": "1",
-        "spotId": "A22",
-        "usId": ""
-    }
-
-    return res.status(200).json(responseData);
-}
-
-export const cancelSpot = async (req: Request, res: Response) => {
-    const responseData = {
-        "parkId": "1",
-        "spotId": "A22",
-        "usId": ""
-    }
-
-    return res.status(200).json(responseData);
-}
-
 export const checkStatusSpot = async (req: Request, res: Response) => {
     const responseData = {
         "parkId": "1",

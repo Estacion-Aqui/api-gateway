@@ -91,7 +91,41 @@ export const createSolicitation = async (req: Request, res: Response) => {
 }
 
 export const helixReserveSpot = async (req: Request, res: Response) => {
-  console.log(req.body);
+  try {
+    const {id, current_plate, status} = req.body.data;
+    const isUsed = status === "filled";
+    console.log(req.body);
 
-  return res.status(200).json({message: "Received this from helix", body: req.body})
+    return res.status(200).json({message: "Received this from helix", body: req.body})
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+}
+
+export const confirmSpot = async (req: Request, res: Response) => {
+  try {
+    const responseData = {
+      "parkId": "1",
+      "spotId": "A22",
+      "usId": ""
+    }
+
+    return res.status(200).json(responseData);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+}
+
+export const cancelSpot = async (req: Request, res: Response) => {
+  try {
+    const responseData = {
+      "parkId": "1",
+      "spotId": "A22",
+      "usId": ""
+    }
+
+    return res.status(200).json(responseData);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
 }

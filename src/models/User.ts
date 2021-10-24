@@ -32,10 +32,4 @@ export default class User {
   @UpdateDateColumn({ name: 'update_At' })
   updatedAt: Date;
 
-  @BeforeInsert()
-  @BeforeUpdate()
-  hashPassword() {
-    this.password = bcrypt.hashSync(this.password, 10);
-  }
-
 }
