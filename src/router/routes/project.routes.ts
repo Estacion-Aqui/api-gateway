@@ -4,19 +4,11 @@ import express from 'express';
 
 const projectRouter = express.Router({ mergeParams: true });
 
-// projectRouter.get("/places", (req, resp) => projectController.getPlaces(req, resp))
-
-// projectRouter.get("/places/:id", (req, resp) => projectController.getPlacesId(req, resp))
-
-// projectRouter.post("/solicitation/:placesId", (req, resp) => projectController.createSoliciation(req, resp))
-
 // projectRouter.post("/reserveSpot/", (req, resp) => projectController.updateSpot(req, resp, true))
 
 // projectRouter.post("/freeSpot/", (req, resp) => projectController.updateSpot(req, resp, false))
 
 // projectRouter.get("/travelData", (req, resp) => projectController.getTravelData(req, resp))
-
-// projectRouter.get("/reserveSpot", (req, resp) => projectController.reserveSpot(req, resp))
 
 // projectRouter.get("/updateData", (req, resp) => projectController.updateData(req, resp))
 

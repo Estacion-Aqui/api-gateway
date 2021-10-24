@@ -24,6 +24,8 @@ class App {
     this.app.use('/api/v1', [
       routes.projectRouter,
       routes.userRouter,
+      routes.spotRouter,
+      routes.placeRouter
     ]);
   }
 }
