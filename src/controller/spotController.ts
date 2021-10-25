@@ -69,7 +69,7 @@ export const createSolicitation = async (req: Request, res: Response) => {
 
     const freeSpots = await spotRepo.find({
       where: {
-        status: "free",
+        status: true,
         place: placeId
       },
     });
@@ -91,9 +91,14 @@ export const createSolicitation = async (req: Request, res: Response) => {
 
 export const helixReserveSpot = async (req: Request, res: Response) => {
   try {
+    const spotRepo = getRepository(Spot);
     const {id, current_plate, status} = req.body.data;
     const isUsed = status === "filled";
     console.log(req.body.data);
+
+    const newSpot = spotRepo.create({id, status : isUsed, plate:current_plate});
+
+    await spotRepo.save(newSpot);
 
     return res.status(200).json({message: "Received this from helix", body: req.body})
   } catch (error) {
@@ -149,4 +154,18 @@ export const checkStatusSpot = async (req: Request, res: Response) => {
   }
 
   return res.status(200).json(responseData);
+}
+
+
+export const deleteSpotById = async (req: Request, res: Response) => {
+  try {
+    const repo = getRepository(Spot);
+    const { id } = req.params;
+
+    await repo.delete(id);
+
+    return res.status(200).json({"message" : "Success"});
+  } catch (error) {
+    return res.status(404).json(error);
+  }
 }

@@ -11,7 +11,7 @@ spotsRouter.get("/spots/:id", (req, resp) => spotController.getSpotById(req, res
 
 spotsRouter.get("/spots/place/:placeId", (req, resp) => spotController.getSpotsByPlace(req, resp))
 
-spotsRouter.post("/spots/solicitation/:placeId", (req, resp) => spotController.createSolicitation(req, resp))
+// spotsRouter.post("/spots/solicitation/:placeId", (req, resp) => spotController.createSolicitation(req, resp))
 
 spotsRouter.post("/spots/reserveSpot", (req, resp) => spotController.helixReserveSpot(req, resp))
 
@@ -22,5 +22,7 @@ spotsRouter.delete("/spots/cancelSpot/:id", (req, resp) => spotController.cancel
 spotsRouter.get("/spots/checkStatus", (req, resp) => spotController.checkStatusSpot(req, resp))
 
 spotsRouter.post("/spots/freeSpot", (req, resp) => spotController.updateSpot(req, resp, false))
+
+spotsRouter.delete("/spots/:id", (req, resp) => spotController.deleteSpotById(req, resp))
 
 export default spotsRouter;
