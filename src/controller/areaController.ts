@@ -29,13 +29,13 @@ export const updateArea = async (req: Request, res: Response) => {
     const { id } = req.params;
     const {name, place, code} = req.body;
 
-    const newArea = repo.create({name, place, code});
+    const newArea = repo.create({id, name, place, code});
 
     const errors = await validate(newArea);
 
     if (errors.length === 0) {
       const createdArea = await repo.save(newArea);
-      return res.status(201).json(createdArea);
+      return res.status(200).json(createdArea);
     }
 
     return res.status(422).json(errors);

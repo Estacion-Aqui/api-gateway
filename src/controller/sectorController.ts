@@ -29,13 +29,13 @@ export const updateSector = async (req: Request, res: Response) => {
     const { id } = req.params;
     const {name, area, code} = req.body;
 
-    const newSector = repo.create({name, area, code});
+    const newSector = repo.create({id, name, area, code});
 
     const errors = await validate(newSector);
 
     if (errors.length === 0) {
       const createdSector = await repo.save(newSector);
-      return res.status(201).json(createdSector);
+      return res.status(200).json(createdSector);
     }
 
     return res.status(422).json(errors);

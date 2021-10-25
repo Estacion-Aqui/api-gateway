@@ -35,7 +35,7 @@ export const updatePlaces = async (req: Request, res: Response) => {
 
     if (errors.length === 0) {
       const createdPlace = await repo.save(newPlace);
-      return res.status(201).json(createdPlace);
+      return res.status(200).json(createdPlace);
     }
 
     return res.status(422).json(errors);
