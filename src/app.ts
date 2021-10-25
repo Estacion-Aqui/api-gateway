@@ -24,6 +24,8 @@ class App {
       routes.userRouter,
       routes.spotRouter,
       routes.placeRouter,
+      routes.areaRouter,
+      routes.sectorRouter,
       routes.authRouter,
       routes.adminRouter
     ]);

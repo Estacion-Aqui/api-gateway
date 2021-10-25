@@ -11,6 +11,9 @@ export default class Sector {
   @Column({nullable: false})
   name: string;
 
+  @Column({nullable: false})
+  code: string;
+
   @ManyToOne(type => Area, sectors => Sector)
   area: Area;
 

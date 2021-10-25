@@ -1,5 +1,6 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import Spot from './Spot';
+import Area from './Area';
 
 @Entity('place')
 export default class Place {
@@ -13,9 +14,6 @@ export default class Place {
   @Column({nullable: false})
   title: string;
 
-  @Column({nullable: true})
-  quantitySpots: number;
-
   @Column({nullable: true, type: "decimal" })
   latitude: number;
 
@@ -24,6 +22,9 @@ export default class Place {
 
   @OneToMany(type => Spot, place => Place, {onDelete: 'CASCADE'})
   spots: Promise<Spot[]>;
+
+  @OneToMany(type => Area, place => Place, {onDelete: 'CASCADE'})
+  areas: Promise<Area[]>;
 
   @CreateDateColumn({ name: 'created_At' })
   createdAt: Date;

@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import Sector from './Sector';
+import Place from './Place';
 
 @Entity('area')
 export default class Area {
@@ -9,6 +10,12 @@ export default class Area {
 
   @Column({nullable: false})
   name: string;
+
+  @Column({nullable: false})
+  code: string;
+
+  @ManyToOne(type => Place, areas => Area)
+  place: Place;
 
   @OneToMany(type => Sector, area => Area)
   sectors: Promise<Sector[]>;
