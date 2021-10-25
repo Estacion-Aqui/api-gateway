@@ -16,10 +16,10 @@ export default class Place {
   @Column({nullable: true})
   quantitySpots: number;
 
-  @Column({nullable: true})
+  @Column({nullable: true, type: "decimal" })
   latitude: number;
 
-  @Column({nullable: true})
+  @Column({nullable: true, type: "decimal" })
   longitude: number;
 
   @OneToMany(type => Spot, place => Place, {onDelete: 'CASCADE'})

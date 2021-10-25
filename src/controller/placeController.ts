@@ -54,7 +54,7 @@ export const deletePlaceById = async (req: Request, res: Response) => {
 
     await repo.delete(id);
 
-    return res.status(200).json({"msg" : "Success"});
+    return res.status(200).json({"message" : "Success"});
   } catch (error) {
     return res.status(404).json(error);
   }
