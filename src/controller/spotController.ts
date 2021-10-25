@@ -35,6 +35,24 @@ export const getSpots = async (req: Request, res: Response) => {
   }
 }
 
+export const getFreeSpot = async (req: Request, res: Response) => {
+  try {
+    const repo = getRepository(Spot);
+
+    const { placeId } = req.params;
+
+    const spotsByPlace = await repo.find({where: { place: placeId, status: true }});
+
+    if (spotsByPlace.length <= 0) {
+      return res.status(400).json({message: "No free spots found in this place"})
+    }
+
+    return res.status(200).json(spotsByPlace[0]);
+  } catch(error) {
+    return res.status(400).json(error);
+  }
+}
+
 export const getSpotById = async (req: Request, res: Response) => {
   try {
     const repo = getRepository(Spot);

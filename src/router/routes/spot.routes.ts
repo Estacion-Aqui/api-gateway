@@ -7,6 +7,8 @@ spotsRouter.post("/spots", (req, resp) => spotController.createSpot(req, resp))
 
 spotsRouter.get("/spots", (req, resp) => spotController.getSpots(req, resp))
 
+spotsRouter.get("/spots/free/:placeId", (req, resp) => spotController.getFreeSpot(req, resp))
+
 spotsRouter.get("/spots/:id", (req, resp) => spotController.getSpotById(req, resp))
 
 spotsRouter.get("/spots/place/:placeId", (req, resp) => spotController.getSpotsByPlace(req, resp))
