@@ -6,9 +6,30 @@ import { Place } from '../models'
 export const createPlaces = async (req: Request, res: Response) => {
   try {
     const repo = getRepository(Place);
-    const {type, title, quantitySpots, latitude, longitude} = req.body;
+    const {type, title, latitude, longitude} = req.body;
 
-    const newPlace = repo.create({type, title, quantitySpots, latitude, longitude});
+    const newPlace = repo.create({type, title, latitude, longitude});
+
+    const errors = await validate(newPlace);
+
+    if (errors.length === 0) {
+      const createdPlace = await repo.save(newPlace);
+      return res.status(201).json(createdPlace);
+    }
+
+    return res.status(422).json(errors);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+}
+
+export const updatePlaces = async (req: Request, res: Response) => {
+  try {
+    const repo = getRepository(Place);
+    const { id } = req.params;
+    const {type, title, latitude, longitude} = req.body;
+
+    const newPlace = repo.create({id, type, title, latitude, longitude});
 
     const errors = await validate(newPlace);
 
