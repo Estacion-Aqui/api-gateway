@@ -92,11 +92,15 @@ export const createSolicitation = async (req: Request, res: Response) => {
 export const helixReserveSpot = async (req: Request, res: Response) => {
   try {
     const spotRepo = getRepository(Spot);
-    const {id, current_plate, status} = req.body.data;
-    const isUsed = status === "filled";
+    let {id, current_plate, status} = req.body.data;
+    status = status === "filled";
+    const plate = current_plate;
     console.log(req.body.data);
 
-    const newSpot = spotRepo.create({id, status : isUsed, plate:current_plate});
+    // const newSpot = spotRepo.create({id, status, plate});
+    const newSpot = spotRepo.create({id, status});
+
+    const errors = await validate(newSpot);
 
     await spotRepo.save(newSpot);
 
