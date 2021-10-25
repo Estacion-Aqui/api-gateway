@@ -5,6 +5,8 @@ const placesRouter = express.Router({ mergeParams: true });
 
 placesRouter.post("/places", (req, resp) => placeController.createPlaces(req, resp))
 
+placesRouter.put("/places/:id", (req, resp) => placeController.updatePlaces(req, resp))
+
 placesRouter.get("/places", (req, resp) => placeController.getPlaces(req, resp))
 
 placesRouter.get("/places/:id", (req, resp) => placeController.getPlaceById(req, resp))
