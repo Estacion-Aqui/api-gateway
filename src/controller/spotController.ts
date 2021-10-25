@@ -111,7 +111,7 @@ export const helixReserveSpot = async (req: Request, res: Response) => {
   try {
     const spotRepo = getRepository(Spot);
     let {id, current_plate, status} = req.body.data;
-    status = status === "filled";
+    status = status !== "filled";
     const plate = current_plate;
     console.log(req.body.data);
 
