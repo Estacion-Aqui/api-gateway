@@ -97,7 +97,7 @@ export const getFreeSpot = async (req: Request, res: Response) => {
       return res.status(400).json({message: "No free spots found in this place"})
     }
 
-    await createReserve(selectedSpot);
+    // await createReserve(selectedSpot);
 
     return res.status(200).json(selectedSpot);
   } catch(error) {
