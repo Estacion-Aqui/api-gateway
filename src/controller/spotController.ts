@@ -81,7 +81,7 @@ export const getFreeSpot = async (req: Request, res: Response) => {
       return res.status(400).json({message: "No free spots found in this place"})
     }
 
-    let selectedSpot : Spot = new Spot;
+    /*let selectedSpot : Spot = new Spot;
     const invalidSpots = await checkReserves(placeId);
 
     spotsByPlace.forEach(function(item){
@@ -89,7 +89,9 @@ export const getFreeSpot = async (req: Request, res: Response) => {
         selectedSpot = item;
         return;
       }
-    });
+    });*/
+
+    let selectedSpot = spotsByPlace[0];
 
     if(selectedSpot.id == null) {
       return res.status(400).json({message: "No free spots found in this place"})
