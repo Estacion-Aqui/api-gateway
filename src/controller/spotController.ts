@@ -201,7 +201,7 @@ export const helixReserveSpot = async (req: Request, res: Response) => {
     const currentSpot = await spotRepo.findOneOrFail({where: { sensorId: id}});
 
     // const newSpot = spotRepo.create({id, status, plate});
-    const newSpot = spotRepo.create({id: currentSpot.id, status});
+    const newSpot = spotRepo.create({id: currentSpot.id, status, plate:current_plate});
 
     const errors = await validate(newSpot);
 
