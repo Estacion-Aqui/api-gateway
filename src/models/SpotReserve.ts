@@ -3,8 +3,8 @@ import Place from './Place';
 import Spot from './Spot';
 import User from './User';
 
-@Entity('spot')
-export default class SpotHistory {
+@Entity('spot_reserve')
+export default class SpotReserve {
 
   @PrimaryGeneratedColumn('uuid')
   id: string;

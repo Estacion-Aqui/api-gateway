@@ -2,7 +2,7 @@ import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGenerate
 import Spot from './Spot';
 import User from './User';
 
-@Entity('spot')
+@Entity('spot_history')
 export default class SpotHistory {
 
   @PrimaryGeneratedColumn('uuid')
