@@ -1,8 +1,9 @@
 import { validate } from 'class-validator';
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
+import { createSecureServer } from 'http2';
+import { getRepository, MoreThan } from 'typeorm';
 
-import { Spot, SpotRequest } from '../models'
+import { Spot, SpotHistory, SpotRequest, SpotReserve } from '../models'
 
 export const createSpot = async (req: Request, res: Response) => {
   try {
@@ -24,6 +25,39 @@ export const createSpot = async (req: Request, res: Response) => {
   }
 }
 
+export const createHistory = async (req: Request, res: Response) => {
+  try {
+    const repo = getRepository(SpotHistory);
+    const {userId, spotId} = req.body;
+
+    const newSpot = repo.create({user:userId, spot:spotId});
+
+    const errors = await validate(newSpot);
+
+    if (errors.length === 0) {
+      const createdSpot = await repo.save(newSpot);
+      return res.status(201).json(createdSpot);
+    }
+
+    return res.status(422).json(errors);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+}
+
+export const getHistory = async (req: Request, res: Response) => {
+  try {
+    const repo = getRepository(SpotHistory);
+
+    const { usId } = req.params;
+
+    const allSpots = await repo.find({where: { user: usId }});
+
+    return res.status(200).json(allSpots);
+  } catch(error) {
+    return res.status(400).json(error);
+  }
+}
 export const getSpots = async (req: Request, res: Response) => {
   try {
     const repo = getRepository(Spot);
@@ -47,10 +81,56 @@ export const getFreeSpot = async (req: Request, res: Response) => {
       return res.status(400).json({message: "No free spots found in this place"})
     }
 
-    return res.status(200).json(spotsByPlace[0]);
+    let selectedSpot : Spot = new Spot;
+    const invalidSpots = await checkReserves(placeId);
+
+    spotsByPlace.forEach(function(item){
+      if(!invalidSpots.includes(item)){
+        selectedSpot = item;
+        return;
+      }
+    });
+
+    if(selectedSpot.id == null) {
+      return res.status(400).json({message: "No free spots found in this place"})
+    }
+
+    await createReserve(selectedSpot);
+
+    return res.status(200).json(selectedSpot);
   } catch(error) {
     return res.status(400).json(error);
   }
+}
+
+const createReserve = async(spotsByPlace : Spot) => {
+    const repo = getRepository(SpotReserve);
+
+    const newSpot = repo.create({spot:spotsByPlace, place:spotsByPlace.place});
+
+    const errors = await validate(newSpot);
+
+    if (errors.length === 0) {
+      await repo.save(newSpot);
+    }
+
+}
+const checkReserves = async(placeId : String) => {
+  const repo = getRepository(SpotReserve);
+
+  let dts = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+
+  const spotReserve = await repo.find({where: { place: placeId,
+       createdAt:  MoreThan(dts) }});
+
+  let spotReserveIdSet : Spot[] = [];
+  if (spotReserve.length > 0) {
+    spotReserve.forEach(function(item){
+      spotReserveIdSet.push(item.spot);
+    }, {spotReserveIdSet})
+  }
+  return spotReserveIdSet;
+
 }
 
 export const getSpotById = async (req: Request, res: Response) => {
@@ -122,10 +202,18 @@ export const helixReserveSpot = async (req: Request, res: Response) => {
 
     await spotRepo.save(newSpot);
 
+    if(!status)
+      await deleteReserve(newSpot);
+
     return res.status(200).json({message: "Received this from helix", body: req.body})
   } catch (error) {
     return res.status(400).json(error);
   }
+}
+
+const deleteReserve = async (req: Spot) => {
+  const repo = getRepository(SpotReserve);
+  await repo.delete({spot: req});
 }
 
 export const confirmSpot = async (req: Request, res: Response) => {

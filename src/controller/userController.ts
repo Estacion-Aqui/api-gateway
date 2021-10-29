@@ -28,6 +28,25 @@ export const createUser = async (req: Request, res: Response) => {
   }
 }
 
+export const updateUser = async (req: Request, res: Response) => {
+  try {
+    const userRepository = getRepository(User);
+    const {id, email, user, car, plate} = req.body;
+
+    const newSpot = userRepository.create({id, email, user, car, plate});
+
+    const errors = await validate(newSpot);
+
+    if (errors.length === 0) {
+      const user = await userRepository.save(req.body)
+      return res.status(201).json(user);
+    }
+
+    return res.status(422).json(errors);
+  } catch(error) {
+    return res.status(422).json(error)
+  }
+}
 export const getUsers = async (req: Request, res: Response) => {
   try {
     const userRepository = getRepository(User);
@@ -95,15 +114,21 @@ export const changePassword = async (req: Request, res: Response) => {
 
 export const checkLogin = async (req: Request, res: Response) => {
   try {
-    const responseData = {
-      "id": "10",
-      "name" : "Teixeira",
-      "car" : "Audi A3",
-      "email" : "gabrielteixeir137@gmail.com"
+    const userRepository = getRepository(User);
+    const {email} = req.body;
+
+    const password = Bcrypt.hashSync(req.body.password, 10);
+
+    const usData = await userRepository.find({where: { email: email, password: password }});
+
+    const errors = await validate(usData);
+
+    if (errors.length === 0) {
+      return res.status(201).json(usData);
     }
 
-  return res.status(200).json(responseData);
+    return res.status(422).json(errors);
   } catch(error) {
-    return res.status(404).json(error)
+    return res.status(422).json(error)
   }
 }

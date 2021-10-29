@@ -27,4 +27,8 @@ spotsRouter.post("/spots/freeSpot", (req, resp) => spotController.updateSpot(req
 
 spotsRouter.delete("/spots/:id", (req, resp) => spotController.deleteSpotById(req, resp))
 
+spotsRouter.post("/spots/history", (req, resp) => spotController.createHistory(req, resp))
+
+spotsRouter.get("/spots/history/:id", (req, resp) => spotController.getHistory(req, resp))
+
 export default spotsRouter;
