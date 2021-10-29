@@ -81,15 +81,15 @@ export const getFreeSpot = async (req: Request, res: Response) => {
       return res.status(400).json({message: "No free spots found in this place"})
     }
 
-    const selectedSpot = await checkReserves(placeId, spotsByPlace);
+    /*const selectedSpot = await checkReserves(placeId, spotsByPlace);
 
     if(selectedSpot.id == null) {
       return res.status(400).json({message: "No free spots found in this place"})
     }
 
     await createReserve(selectedSpot);
-
-    return res.status(200).json(selectedSpot);
+*/
+    return res.status(200).json(spotsByPlace[0]);
   } catch(error) {
     console.log(error);
     return res.status(400).json(error);
