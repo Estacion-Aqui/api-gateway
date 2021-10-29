@@ -81,26 +81,17 @@ export const getFreeSpot = async (req: Request, res: Response) => {
       return res.status(400).json({message: "No free spots found in this place"})
     }
 
-    /*let selectedSpot : Spot = new Spot;
-    const invalidSpots = await checkReserves(placeId);
-
-    spotsByPlace.forEach(function(item){
-      if(!invalidSpots.includes(item)){
-        selectedSpot = item;
-        return;
-      }
-    });*/
-
-    let selectedSpot = spotsByPlace[0];
+    const selectedSpot = await checkReserves(placeId, spotsByPlace);
 
     if(selectedSpot.id == null) {
       return res.status(400).json({message: "No free spots found in this place"})
     }
 
-    // await createReserve(selectedSpot);
+    await createReserve(selectedSpot);
 
     return res.status(200).json(selectedSpot);
   } catch(error) {
+    console.log(error);
     return res.status(400).json(error);
   }
 }
@@ -117,10 +108,12 @@ const createReserve = async(spotsByPlace : Spot) => {
     }
 
 }
-const checkReserves = async(placeId : String) => {
+const checkReserves = async(placeId : String, spotsByPlace : Spot[]) => {
   const repo = getRepository(SpotReserve);
 
-  let dts = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+  var minutesago = new Date((new Date()).getTime() - (1000*60*30));
+
+  let dts = minutesago.toISOString().replace(/T/, ' ').replace(/\..+/, '');
 
   const spotReserve = await repo.find({where: { place: placeId,
        createdAt:  MoreThan(dts) }});
@@ -131,7 +124,15 @@ const checkReserves = async(placeId : String) => {
       spotReserveIdSet.push(item.spot);
     }, {spotReserveIdSet})
   }
-  return spotReserveIdSet;
+
+
+    spotsByPlace.forEach(function(item){
+      if(!spotReserveIdSet.includes(item)){
+        return item;
+      }
+    });
+
+  return new Spot;
 
 }
 
@@ -197,8 +198,10 @@ export const helixReserveSpot = async (req: Request, res: Response) => {
     const plate = current_plate;
     console.log(req.body.data);
 
+    const currentSpot = await spotRepo.findOneOrFail({where: { sensorId: id}});
+
     // const newSpot = spotRepo.create({id, status, plate});
-    const newSpot = spotRepo.create({id, status});
+    const newSpot = spotRepo.create({id: currentSpot.id, status});
 
     const errors = await validate(newSpot);
 
