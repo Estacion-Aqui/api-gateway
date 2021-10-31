@@ -21,10 +21,7 @@ export default class Spot {
   @Column({ name: 'sensor_id', nullable: false })
   sensorId: string;
 
-  @ManyToOne(type => Place, spots => Spot)
-  place: Place;
-
-  @ManyToOne(type => Sector, spots => Spot)
+  @ManyToOne(type => Sector, spots => Spot, { eager: false })
   sector: Sector;
 
   @OneToMany(type => SpotRequest, spot => Spot, {onDelete: 'SET NULL'})

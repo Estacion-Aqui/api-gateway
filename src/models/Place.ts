@@ -20,9 +20,6 @@ export default class Place {
   @Column({nullable: true, type: "decimal" })
   longitude: number;
 
-  @OneToMany(type => Spot, place => Place, {onDelete: 'CASCADE'})
-  spots: Promise<Spot[]>;
-
   @OneToMany(type => Area, place => Place, {onDelete: 'CASCADE'})
   areas: Promise<Area[]>;
 

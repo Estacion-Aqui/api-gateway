@@ -14,7 +14,7 @@ export default class Sector {
   @Column({nullable: false})
   code: string;
 
-  @ManyToOne(type => Area, sectors => Sector)
+  @ManyToOne(type => Area, sectors => Sector, { eager: false })
   area: Area;
 
   @OneToMany(type => Spot, sector => Sector)
