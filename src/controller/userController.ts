@@ -130,15 +130,9 @@ export const checkLogin = async (req: Request, res: Response) => {
 
     const password = Bcrypt.hashSync(req.body.password, 10);
 
-    const usData = await userRepository.find({where: { email: email, password: password }});
+    const usData = await userRepository.findOneOrFail({where: { email: email, password: password }});
 
-    // const errors = await validate(usData);
-
-    if (errors.length === 0) {
-      return res.status(201).json(usData);
-    }
-
-    return res.status(422).json(errors);
+    return res.status(201).json(usData);
   } catch(error) {
     return res.status(422).json(error)
   }
