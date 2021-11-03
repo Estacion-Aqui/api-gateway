@@ -10,19 +10,30 @@ import * as jwt from '../utils/jwt';
 export const createUser = async (req: Request, res: Response) => {
   try {
     const userRepository = getRepository(User);
+    const userCustomRepository = getCustomRepository(UserRepository);
     const {email, user, car, plate} = req.body;
     const password = Bcrypt.hashSync(req.body.password, 10);
 
     const newSpot = userRepository.create({email, user, car, plate, password});
 
-    const errors = await validate(newSpot);
-
-    if (errors.length === 0) {
-      const user = await userRepository.save(req.body)
-      return res.status(201).json(user);
+    let foundUser: User = new User();
+    if (user) {
+      foundUser = await userCustomRepository.findByUsername(String(user));
+    } else if (email) {
+      foundUser = await userCustomRepository.findByEmail(String(email));
     }
 
-    return res.status(422).json(errors);
+    if(foundUser.id == null){
+      const errors = await validate(newSpot);
+
+      if (errors.length === 0) {
+        const user = await userRepository.save(req.body);
+        return res.status(201).json(user);
+      }
+      return res.status(422).json(errors);
+    }else{
+        return res.status(201).json(foundUser);
+    }
   } catch(error) {
     return res.status(422).json(error)
   }
@@ -121,7 +132,7 @@ export const checkLogin = async (req: Request, res: Response) => {
 
     const usData = await userRepository.find({where: { email: email, password: password }});
 
-    const errors = await validate(usData);
+    // const errors = await validate(usData);
 
     if (errors.length === 0) {
       return res.status(201).json(usData);
