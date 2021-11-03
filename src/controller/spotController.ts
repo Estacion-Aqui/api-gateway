@@ -3,14 +3,14 @@ import { Request, Response } from 'express';
 import { createSecureServer } from 'http2';
 import { getRepository, MoreThan } from 'typeorm';
 
-import { Spot, SpotHistory, SpotRequest, SpotReserve } from '../models'
+import { Spot, SpotHistory, SpotRequest, SpotReserve, Place } from '../models'
 
 export const createSpot = async (req: Request, res: Response) => {
   try {
     const repo = getRepository(Spot);
-    const {place, title, status, sector, sensorId} = req.body;
+    const {title, status, sector, sensorId} = req.body;
 
-    const newSpot = repo.create({place, title, status, sector, sensorId});
+    const newSpot = repo.create({title, status, sector, sensorId});
 
     const errors = await validate(newSpot);
 
@@ -87,7 +87,7 @@ export const getFreeSpot = async (req: Request, res: Response) => {
       return res.status(400).json({message: "No free spots found in this place"})
     }
 
-    await createReserve(selectedSpot);
+    await createReserve(selectedSpot, placeId);
 */
     return res.status(200).json(spotsByPlace[0]);
   } catch(error) {
@@ -96,10 +96,13 @@ export const getFreeSpot = async (req: Request, res: Response) => {
   }
 }
 
-const createReserve = async(spotsByPlace : Spot) => {
+const createReserve = async(spotsByPlace : Spot, placeId: String) => {
     const repo = getRepository(SpotReserve);
+    const repoPlace = getRepository(Place);
 
-    const newSpot = repo.create({spot:spotsByPlace, place:spotsByPlace.place});
+    const places = await repoPlace.findOneOrFail({where: { id: placeId }});
+
+    const newSpot = repo.create({spot:spotsByPlace, place:places});
 
     const errors = await validate(newSpot);
 
