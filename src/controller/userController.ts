@@ -126,10 +126,10 @@ export const checkLogin = async (req: Request, res: Response) => {
     const userRepository = getRepository(User);
     const {email} = req.body;
 
-    const usData = await userRepository.findOneOrFail({where: { email: email}});
+    let foundUser = await userRepository.findOne({where: { email: email }});
 
-    if(req.body.password == usData.password)
-      return res.status(201).json(usData);
+    if(foundUser != null && req.body.password == foundUser.password)
+      return res.status(201).json(foundUser);
     else
       return res.status(404).json({ message: "Invalid Password" });
   } catch(error) {
