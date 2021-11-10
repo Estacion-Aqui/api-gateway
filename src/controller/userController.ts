@@ -19,7 +19,8 @@ export const createUser = async (req: Request, res: Response) => {
     if (email) {
       foundUser = await userRepository.findOne({where: { email: email }});
     }
-
+    console.log(req.body.password);
+    console.log(foundUser?.password);
     if(foundUser == null){
       const errors = await validate(newSpot);
 
@@ -28,7 +29,7 @@ export const createUser = async (req: Request, res: Response) => {
         return res.status(201).json(user);
       }
       return res.status(422).json(errors);
-    }else if(foundUser != null && Bcrypt.compareSync(req.body.password, foundUser.password)){
+    }else if(foundUser != null && !Bcrypt.compareSync(req.body.password, foundUser.password)){
       return res.status(404).json({ message: "Invalid Password" });
     }else{
         return res.status(201).json(foundUser);
