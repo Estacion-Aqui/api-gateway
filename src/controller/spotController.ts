@@ -71,11 +71,15 @@ export const getSpots = async (req: Request, res: Response) => {
 
 export const getFreeSpot = async (req: Request, res: Response) => {
   try {
-    const repo = getRepository(Spot);
+    const repoSpot = getRepository(Spot);
+    const repoArea = getRepository(Area);
+    const repoSector = getRepository(Sector);
 
     const { placeId } = req.params;
 
-    const spotsByPlace = await repo.find({where: { place: placeId, status: true }});
+    const areaByPlace = await repoArea.findOneOrFail({where: { place: placeId }});
+    const sectorByPlace = await repoSector.findOneOrFail({where: { area: areaByPlace.id }});
+    const spotsByPlace = await repoSpot.find({where: { sector: sectorByPlace.id, status: true }});
 
     if (spotsByPlace.length <= 0) {
       return res.status(400).json({message: "No free spots found in this place"})
