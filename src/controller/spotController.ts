@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { createSecureServer } from 'http2';
 import { getRepository, MoreThan } from 'typeorm';
 
-import { Spot, SpotHistory, SpotRequest, SpotReserve, Place } from '../models'
+import { Spot, SpotHistory, SpotRequest, SpotReserve, Place, Area, Sector } from '../models'
 
 export const createSpot = async (req: Request, res: Response) => {
   try {
@@ -167,10 +167,15 @@ export const getSpotById = async (req: Request, res: Response) => {
 
 export const getSpotsByPlace = async (req: Request, res: Response) => {
   try {
-    const repo = getRepository(Spot);
+    const repoSpot = getRepository(Spot);
+    const repoArea = getRepository(Area);
+    const repoSector = getRepository(Sector);
+
     const { placeId } = req.params;
 
-    const spotsByPlace = await repo.find({where: { place: placeId }});
+    const areaByPlace = await repoArea.findOneOrFail({where: { place: placeId }});
+    const sectorByPlace = await repoSector.findOneOrFail({where: { area: areaByPlace.id }});
+    const spotsByPlace = await repoSpot.find({where: { sector: sectorByPlace.id }});
 
     return res.status(200).json(spotsByPlace);
   } catch(error) {
