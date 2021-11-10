@@ -150,7 +150,7 @@ export const getSpotById = async (req: Request, res: Response) => {
 
     const foundSpot = await repo.findOneOrFail(id);
 
-    const tst = {
+    /*const tst = {
       ...foundSpot,
       placeId: foundSpot.sector.area.place.id,
       sector: {
@@ -161,9 +161,9 @@ export const getSpotById = async (req: Request, res: Response) => {
         ...foundSpot.sector.area,
         place: {}
       }
-    }
+    }*/
 
-    return res.status(200).json(tst);
+    return res.status(200).json(foundSpot);
   } catch(error) {
     return res.status(400).json(error);
   }
