@@ -16,9 +16,7 @@ export const createUser = async (req: Request, res: Response) => {
     const newSpot = userRepository.create({email, user, car, plate, password});
 
     let foundUser;
-    if (user) {
-      foundUser = await userRepository.findOne({where: { user: user }});
-    } else if (email) {
+    if (email) {
       foundUser = await userRepository.findOne({where: { email: email }});
     }
 
