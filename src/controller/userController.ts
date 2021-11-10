@@ -128,10 +128,13 @@ export const checkLogin = async (req: Request, res: Response) => {
 
     let foundUser = await userRepository.findOne({where: { email: email }});
 
-    if(foundUser != null && req.body.password == foundUser.password)
-      return res.status(201).json(foundUser);
-    else
+    if(foundUser != null && req.body.password != foundUser.password){
       return res.status(404).json({ message: "Invalid Password" });
+    }else if(foundUser == null){
+      return res.status(404).json({ message: "Invalid User" });
+    }else{
+      return res.status(201).json(foundUser);
+    }
   } catch(error) {
     return res.status(422).json(error)
   }
