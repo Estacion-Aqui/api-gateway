@@ -20,7 +20,7 @@ export const createUser = async (req: Request, res: Response) => {
       foundUser = await userRepository.findOne({where: { email: email }});
     }
 
-    if(foundUser?.id == null){
+    if(foundUser == null){
       const errors = await validate(newSpot);
 
       if (errors.length === 0) {
@@ -28,7 +28,7 @@ export const createUser = async (req: Request, res: Response) => {
         return res.status(201).json(user);
       }
       return res.status(422).json(errors);
-    }else if(password != foundUser.password){
+    }else if(foundUser != null && Bcrypt.compareSync(req.body.password, foundUser.password)){
       return res.status(404).json({ message: "Invalid Password" });
     }else{
         return res.status(201).json(foundUser);
@@ -127,11 +127,12 @@ export const checkLogin = async (req: Request, res: Response) => {
     const userRepository = getRepository(User);
     const {email} = req.body;
 
-    const password = Bcrypt.hashSync(req.body.password, 10);
+    const usData = await userRepository.findOneOrFail({where: { email: email}});
 
-    const usData = await userRepository.findOneOrFail({where: { email: email, password: password }});
-
-    return res.status(201).json(usData);
+    if(Bcrypt.compareSync(req.body.password, usData.password))
+      return res.status(201).json(usData);
+    else
+      return res.status(404).json({ message: "Invalid Password" });
   } catch(error) {
     return res.status(422).json(error)
   }
