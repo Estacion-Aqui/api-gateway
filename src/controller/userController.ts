@@ -10,20 +10,19 @@ import * as jwt from '../utils/jwt';
 export const createUser = async (req: Request, res: Response) => {
   try {
     const userRepository = getRepository(User);
-    const userCustomRepository = getCustomRepository(UserRepository);
     const {email, user, car, plate} = req.body;
     const password = Bcrypt.hashSync(req.body.password, 10);
 
     const newSpot = userRepository.create({email, user, car, plate, password});
 
-    let foundUser: User = new User();
+    let foundUser;
     if (user) {
-      foundUser = await userCustomRepository.findByUsername(String(user));
+      foundUser = await userRepository.findOne({where: { user: user }});
     } else if (email) {
-      foundUser = await userCustomRepository.findByEmail(String(email));
+      foundUser = await userRepository.findOne({where: { email: email }});
     }
 
-    if(foundUser.id == null){
+    if(foundUser?.id == null){
       const errors = await validate(newSpot);
 
       if (errors.length === 0) {
