@@ -30,6 +30,8 @@ export const createUser = async (req: Request, res: Response) => {
         return res.status(201).json(user);
       }
       return res.status(422).json(errors);
+    }else if(password != foundUser.password){
+      return res.status(404).json({ message: "Invalid Password" });
     }else{
         return res.status(201).json(foundUser);
     }
@@ -92,7 +94,7 @@ export const searchUser = async (req: Request, res: Response) => {
     } else if (email) {
       foundUser = await userRepository.findByEmail(String(email));
     } else {
-      return res.status(404).json({ message: "User not found with this params" })
+      return res.status(404).json({ message: "User not found with this params" });
     }
 
     return res.status(200).json(foundUser);
