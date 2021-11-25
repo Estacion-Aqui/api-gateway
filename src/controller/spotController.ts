@@ -2,6 +2,7 @@ import { validate } from 'class-validator';
 import { Request, Response } from 'express';
 import { createSecureServer } from 'http2';
 import { getRepository, MoreThan } from 'typeorm';
+import { updateStatus } from '../service/helix.service';
 
 import { Spot, SpotHistory, SpotRequest, SpotReserve, Place, Area, Sector } from '../models'
 
@@ -93,6 +94,8 @@ export const getFreeSpot = async (req: Request, res: Response) => {
 
     await createReserve(selectedSpot, placeId);
 */
+    await updateStatus(spotsByPlace[0].sensorId, 'reserved');
+
     return res.status(200).json(spotsByPlace[0]);
   } catch(error) {
     console.log(error);
@@ -219,6 +222,7 @@ export const helixReserveSpot = async (req: Request, res: Response) => {
   try {
     const spotRepo = getRepository(Spot);
     let {id, current_plate, status} = req.body.data;
+    let statusSensor = status;
     status = status !== "filled";
     const plate = current_plate;
     console.log(req.body.data);
@@ -234,6 +238,8 @@ export const helixReserveSpot = async (req: Request, res: Response) => {
 
     if(!status)
       await deleteReserve(newSpot);
+
+    await updateStatus(newSpot.sensorId, statusSensor);
 
     return res.status(200).json({message: "Received this from helix", body: req.body})
   } catch (error) {
